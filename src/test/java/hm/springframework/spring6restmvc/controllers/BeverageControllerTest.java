@@ -30,6 +30,17 @@ class BeverageControllerTest {
     BeverageServiceImpl beverageServiceImpl = new BeverageServiceImpl();
 
     @Test
+    void getBeveragesList() throws Exception {
+
+        given(beverageService.listBeverages()).willReturn(beverageServiceImpl.listBeverages());
+
+        mockMvc.perform(get("/api/v1/beverages")
+               .accept(MediaType.APPLICATION_JSON))
+               .andExpect(status().isOk())
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+               .andExpect(jsonPath("$.length()", is(3)));
+    }
+    @Test
     void getBeverageById() throws Exception {
         Beverage testBeverage = beverageServiceImpl.listBeverages().get(0);
         given(beverageService.getBeverageById(any(UUID.class))).willReturn(testBeverage);
