@@ -6,6 +6,7 @@ import hm.springframework.spring6restmvc.services.BeverageService;
 import hm.springframework.spring6restmvc.services.BeverageServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +43,19 @@ class BeverageControllerTest {
     }
 
     @Test
-    void putBeverage() throws Exception {
+    void testDeleteBeverage() throws Exception {
+        Beverage testBev = beverageServiceImpl.listBeverages().get(0);
+
+        mockMvc.perform(delete("/api/v1/beverages/" + testBev.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+        ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
+
+        verify(beverageService).deleteBeverageById(uuidArgumentCaptor.capture());
+        assertThat(testBev.getId()).isEqualTo(uuidArgumentCaptor.getValue());
+    }
+    @Test
+    void testPutBeverage() throws Exception {
         Beverage testBev = beverageServiceImpl.listBeverages().get(0);
 
         mockMvc.perform(put("/api/v1/beverages/" + testBev.getId())
