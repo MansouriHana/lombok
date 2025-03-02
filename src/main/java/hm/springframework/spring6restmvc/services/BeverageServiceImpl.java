@@ -68,17 +68,8 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     public Beverage getBeerById(UUID id) {
         log.debug("Get Beverage by Id - in service. Id: " + id.toString());
-        return Beverage.builder()
-                .id(id)
-                .version(1)
-                .beverageName("Galaxy Cat")
-                .beverageStyle(BeverageStyle.PALE_ALE)
-                .upc("12356")
-                .price(new BigDecimal("12.99"))
-                .quantityOnHand(122)
-                .createdDate(LocalDateTime.now())
-                .updateDate(LocalDateTime.now())
-                .build();
+        return beverageMap.get(id);
+
     }
 
     @Override

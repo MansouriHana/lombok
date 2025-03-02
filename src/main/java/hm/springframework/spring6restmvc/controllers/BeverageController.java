@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,7 +40,9 @@ public class BeverageController {
     public ResponseEntity<Beverage> handlePost(@RequestBody Beverage beverage){
         Beverage saveBeverage = beverageService.saveNewBeverage(beverage);
 
-        return new ResponseEntity<>(saveBeverage, HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/api/v1/beverages/" + saveBeverage.getId().toString());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 
     }
 }
