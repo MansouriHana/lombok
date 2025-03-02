@@ -101,4 +101,9 @@ public class BeverageServiceImpl implements BeverageService {
 
         beverageMap.put(existing.getId(), existing);
     }
+
+    @Override
+    public void deleteBeverageById(UUID beverageId) {
+        beverageMap.remove(beverageId);
+    }
 }

@@ -53,4 +53,12 @@ public class BeverageController {
 
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping("{beverageId}")
+    public ResponseEntity<Beverage> handleDelete(@PathVariable("beverageId") UUID beverageId){
+
+        beverageService.deleteBeverageById(beverageId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
