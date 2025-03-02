@@ -19,24 +19,25 @@ import java.util.UUID;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/beverages")
 public class BeverageController {
 
+    public static final String BEVERAGE_PATH = "/api/v1/beverage";
+    public static final String BEVERAGE_PATH_ID = "/{beverageId}";
     private final BeverageService beverageService;
 
-    @GetMapping("{beverageId}")
+    @GetMapping(BEVERAGE_PATH_ID)
     public Beverage getBeverageById(@PathVariable("beverageId") UUID beverageId) {
 
         log.debug("Get Beverage by Id - in controller -- 1245");
         return beverageService.getBeverageById(beverageId);
     }
 
-    @GetMapping()
+    @GetMapping(BEVERAGE_PATH)
     public List<Beverage> listBeverages() {
         return beverageService.listBeverages();
     }
 
-    @PostMapping
+    @PostMapping(BEVERAGE_PATH)
     public ResponseEntity<Beverage> handlePost(@RequestBody Beverage beverage){
         Beverage saveBeverage = beverageService.saveNewBeverage(beverage);
 
@@ -46,7 +47,7 @@ public class BeverageController {
 
     }
 
-    @PutMapping("{beverageId}")
+    @PutMapping(BEVERAGE_PATH_ID)
     public ResponseEntity<Beverage> handlePut(@PathVariable("beverageId") UUID beverageId, @RequestBody Beverage beverage){
 
         beverageService.updateBeverage(beverageId, beverage);
@@ -54,7 +55,7 @@ public class BeverageController {
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("{beverageId}")
+    @DeleteMapping(BEVERAGE_PATH_ID)
     public ResponseEntity<Beverage> handleDelete(@PathVariable("beverageId") UUID beverageId){
 
         beverageService.deleteBeverageById(beverageId);
@@ -62,7 +63,7 @@ public class BeverageController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("{beverageId}")
+    @PatchMapping(BEVERAGE_PATH_ID)
     public ResponseEntity<Beverage> updateBeveragePatchById(@PathVariable("beverageId")UUID beverageId, @RequestBody Beverage beverage){
 
         beverageService.patchBeverageById(beverageId, beverage);

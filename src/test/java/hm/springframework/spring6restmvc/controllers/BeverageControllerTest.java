@@ -56,7 +56,7 @@ class BeverageControllerTest {
         Map<String, Object> bevMap = new HashMap<>();
         bevMap.put("beverageName", "New Name");
 
-        mockMvc.perform(patch("/api/v1/beverages/" + bev.getId())
+        mockMvc.perform(patch(BeverageController.BEVERAGE_PATH_ID , bev.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bevMap)))
@@ -71,7 +71,7 @@ class BeverageControllerTest {
     void testDeleteBeverage() throws Exception {
         Beverage testBev = beverageServiceImpl.listBeverages().get(0);
 
-        mockMvc.perform(delete("/api/v1/beverages/" + testBev.getId())
+        mockMvc.perform(delete(BeverageController.BEVERAGE_PATH_ID, testBev.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -82,7 +82,7 @@ class BeverageControllerTest {
     void testPutBeverage() throws Exception {
         Beverage testBev = beverageServiceImpl.listBeverages().get(0);
 
-        mockMvc.perform(put("/api/v1/beverages/" + testBev.getId())
+        mockMvc.perform(put(BeverageController.BEVERAGE_PATH_ID,  testBev.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testBev)))
@@ -96,7 +96,7 @@ class BeverageControllerTest {
         testBev.setId(null);
 
         given(beverageService.saveNewBeverage(any(Beverage.class))).willReturn(beverageServiceImpl.listBeverages().get(1));
-        mockMvc.perform(post("/api/v1/beverages")
+        mockMvc.perform(post(BeverageController.BEVERAGE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testBev)))
@@ -108,7 +108,7 @@ class BeverageControllerTest {
 
         given(beverageService.listBeverages()).willReturn(beverageServiceImpl.listBeverages());
 
-        mockMvc.perform(get("/api/v1/beverages")
+        mockMvc.perform(get(BeverageController.BEVERAGE_PATH)
                .accept(MediaType.APPLICATION_JSON))
                .andExpect(status().isOk())
                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -119,7 +119,7 @@ class BeverageControllerTest {
         Beverage testBeverage = beverageServiceImpl.listBeverages().get(0);
         given(beverageService.getBeverageById(any(UUID.class))).willReturn(testBeverage);
 
-        mockMvc.perform(get("/api/v1/beverages/" + testBeverage.getId())
+        mockMvc.perform(get(BeverageController.BEVERAGE_PATH_ID, testBeverage.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
