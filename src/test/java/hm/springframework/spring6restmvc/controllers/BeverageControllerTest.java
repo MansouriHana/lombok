@@ -12,11 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BeverageController.class)
 class BeverageControllerTest {
@@ -34,10 +34,12 @@ class BeverageControllerTest {
         Beverage testBeverage = beverageServiceImpl.listBeverages().get(0);
         given(beverageService.getBeverageById(any(UUID.class))).willReturn(testBeverage);
 
-        mockMvc.perform(get("/api/v1/beverages" + UUID.randomUUID())
+        mockMvc.perform(get("/api/v1/beverages/" + testBeverage.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(testBeverage.getId().toString())))
+                .andExpect(jsonPath("$.beverageName", is(testBeverage.getBeverageName())));
 
     }
 }
