@@ -67,7 +67,7 @@ public class BeverageServiceImpl implements BeverageService {
 
 
     @Override
-    public Beverage getBeerById(UUID id) {
+    public Beverage getBeverageById(UUID id) {
         log.debug("Get Beverage by Id - in service. Id: " + id.toString());
         return beverageMap.get(id);
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface BeverageService {
     List<Beverage> listBeverages();
 
-    Beverage getBeerById(UUID id);
+    Beverage getBeverageById(UUID id);
     Beverage saveNewBeverage(Beverage beverage);
 
     void updateBeverage(UUID beverageId, Beverage beverage);

@@ -28,7 +28,7 @@ public class BeverageController {
     public Beverage getBeverageById(@PathVariable("beverageId") UUID beverageId) {
 
         log.debug("Get Beverage by Id - in controller -- 1245");
-        return beverageService.getBeerById(beverageId);
+        return beverageService.getBeverageById(beverageId);
     }
 
     @GetMapping()
