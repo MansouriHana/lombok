@@ -1,5 +1,6 @@
 package hm.springframework.spring6restmvc.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hm.springframework.spring6restmvc.model.Beverage;
 import hm.springframework.spring6restmvc.services.BeverageService;
 import hm.springframework.spring6restmvc.services.BeverageServiceImpl;
@@ -24,11 +25,20 @@ class BeverageControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     @MockitoBean
     BeverageService beverageService;
 
     BeverageServiceImpl beverageServiceImpl = new BeverageServiceImpl();
 
+    @Test
+    void createBeverage() throws Exception {
+        Beverage testBev = beverageServiceImpl.listBeverages().get(0);
+
+        System.out.println(objectMapper.writeValueAsString(testBev));
+    }
     @Test
     void getBeveragesList() throws Exception {
 
