@@ -4,6 +4,7 @@ import hm.springframework.spring6restmvc.model.Beverage;
 import hm.springframework.spring6restmvc.model.BeverageStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -105,5 +106,30 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     public void deleteBeverageById(UUID beverageId) {
         beverageMap.remove(beverageId);
+    }
+
+    @Override
+    public void patchBeverageById(UUID beverageId, Beverage beverage) {
+        Beverage existing = beverageMap.get(beverageId);
+
+        if (StringUtils.hasText(beverage.getBeverageName())){
+            existing.setBeverageName(beverage.getBeverageName());
+        }
+
+        if (beverage.getBeverageStyle() != null) {
+            existing.setBeverageStyle(beverage.getBeverageStyle());
+        }
+
+        if (beverage.getPrice() != null) {
+            existing.setPrice(beverage.getPrice());
+        }
+
+        if (beverage.getQuantityOnHand() != null){
+            existing.setQuantityOnHand(beverage.getQuantityOnHand());
+        }
+
+        if (StringUtils.hasText(beverage.getUpc())) {
+            existing.setUpc(beverage.getUpc());
+        }
     }
 }

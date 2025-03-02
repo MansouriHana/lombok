@@ -14,4 +14,6 @@ public interface BeverageService {
     void updateBeverage(UUID beverageId, Beverage beverage);
 
     void deleteBeverageById(UUID beverageId);
+
+    void patchBeverageById(UUID beverageId, Beverage beverage);
 }
