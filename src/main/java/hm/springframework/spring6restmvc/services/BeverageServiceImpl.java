@@ -88,4 +88,17 @@ public class BeverageServiceImpl implements BeverageService {
       beverageMap.put(saveBevr.getId(), saveBevr);
       return saveBevr;
     }
+
+    @Override
+    public void updateBeverage(UUID beverageId, Beverage beverage) {
+        Beverage existing = beverageMap.get(beverageId);
+
+        existing.setBeverageName(beverage.getBeverageName());
+        existing.setBeverageStyle(beverage.getBeverageStyle());
+        existing.setQuantityOnHand(beverage.getQuantityOnHand());
+        existing.setUpc(beverage.getUpc());
+        existing.setPrice(beverage.getPrice());
+
+        beverageMap.put(existing.getId(), existing);
+    }
 }

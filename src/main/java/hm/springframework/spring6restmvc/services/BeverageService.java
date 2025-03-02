@@ -10,4 +10,6 @@ public interface BeverageService {
 
     Beverage getBeerById(UUID id);
     Beverage saveNewBeverage(Beverage beverage);
+
+    void updateBeverage(UUID beverageId, Beverage beverage);
 }
