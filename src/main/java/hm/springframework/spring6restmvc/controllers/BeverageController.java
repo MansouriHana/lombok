@@ -42,7 +42,7 @@ public class BeverageController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beverages/" + saveBeverage.getId().toString());
-        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(saveBeverage, headers, HttpStatus.CREATED);
 
     }
 }

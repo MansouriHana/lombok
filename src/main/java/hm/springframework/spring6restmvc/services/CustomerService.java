@@ -9,4 +9,6 @@ public interface CustomerService {
 
     public List<Customer> findAllCustomers();
     public Customer findCustomerById(UUID id);
+
+    Customer saveNewCustomer(Customer customer);
 }
