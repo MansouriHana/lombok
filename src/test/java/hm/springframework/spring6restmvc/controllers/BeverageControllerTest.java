@@ -17,8 +17,8 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BeverageController.class)
@@ -40,6 +40,17 @@ class BeverageControllerTest {
         beverageServiceImpl = new BeverageServiceImpl();
     }
 
+    @Test
+    void putBeverage() throws Exception {
+        Beverage testBev = beverageServiceImpl.listBeverages().get(0);
+
+        mockMvc.perform(put("/api/v1/beverages/" + testBev.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testBev)))
+                .andExpect(status().isNoContent());
+        verify(beverageService).updateBeverage(any(UUID.class), any(Beverage.class));
+    }
     @Test
     void createBeverage() throws Exception {
         Beverage testBev = beverageServiceImpl.listBeverages().get(0);
