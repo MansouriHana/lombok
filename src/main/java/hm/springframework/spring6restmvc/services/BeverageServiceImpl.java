@@ -1,6 +1,6 @@
 package hm.springframework.spring6restmvc.services;
 
-import hm.springframework.spring6restmvc.model.Beverage;
+import hm.springframework.spring6restmvc.model.BeverageDTO;
 import hm.springframework.spring6restmvc.model.BeverageStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ import java.util.*;
 @Service
 public class BeverageServiceImpl implements BeverageService {
 
-    private Map<UUID, Beverage> beverageMap;
+    private Map<UUID, BeverageDTO> beverageMap;
 
     public BeverageServiceImpl() {
         this.beverageMap = new HashMap<>();
 
-        Beverage bev1 = Beverage.builder()
+        BeverageDTO bev1 = BeverageDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .beverageName("Galaxy Cat")
@@ -31,7 +31,7 @@ public class BeverageServiceImpl implements BeverageService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Beverage bev2 = Beverage.builder()
+        BeverageDTO bev2 = BeverageDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .beverageName("Crank")
@@ -43,7 +43,7 @@ public class BeverageServiceImpl implements BeverageService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Beverage bev3 = Beverage.builder()
+        BeverageDTO bev3 = BeverageDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .beverageName("Sunshine City")
@@ -61,21 +61,21 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
-    public List<Beverage> listBeverages() {
+    public List<BeverageDTO> listBeverages() {
         return new ArrayList<>(beverageMap.values());
     }
 
 
     @Override
-    public Beverage getBeverageById(UUID id) {
+    public Optional<BeverageDTO> getBeverageById(UUID id) {
         log.debug("Get Beverage by Id - in service. Id: " + id.toString());
-        return beverageMap.get(id);
+        return Optional.of(beverageMap.get(id));
 
     }
 
     @Override
-    public Beverage saveNewBeverage(Beverage beverage) {
-      Beverage saveBevr = Beverage.builder()
+    public BeverageDTO saveNewBeverage(BeverageDTO beverage) {
+      BeverageDTO saveBevr = BeverageDTO.builder()
               .id(UUID.randomUUID())
               .createdDate(LocalDateTime.now())
               .updateDate(LocalDateTime.now())
@@ -91,8 +91,8 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
-    public void updateBeverage(UUID beverageId, Beverage beverage) {
-        Beverage existing = beverageMap.get(beverageId);
+    public void updateBeverage(UUID beverageId, BeverageDTO beverage) {
+        BeverageDTO existing = beverageMap.get(beverageId);
 
         existing.setBeverageName(beverage.getBeverageName());
         existing.setBeverageStyle(beverage.getBeverageStyle());
@@ -109,8 +109,8 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
-    public void patchBeverageById(UUID beverageId, Beverage beverage) {
-        Beverage existing = beverageMap.get(beverageId);
+    public void patchBeverageById(UUID beverageId, BeverageDTO beverage) {
+        BeverageDTO existing = beverageMap.get(beverageId);
 
         if (StringUtils.hasText(beverage.getBeverageName())){
             existing.setBeverageName(beverage.getBeverageName());

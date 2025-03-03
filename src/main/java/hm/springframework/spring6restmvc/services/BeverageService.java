@@ -1,19 +1,20 @@
 package hm.springframework.spring6restmvc.services;
 
-import hm.springframework.spring6restmvc.model.Beverage;
+import hm.springframework.spring6restmvc.model.BeverageDTO;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface BeverageService {
-    List<Beverage> listBeverages();
+    List<BeverageDTO> listBeverages();
 
-    Beverage getBeverageById(UUID id);
-    Beverage saveNewBeverage(Beverage beverage);
+    Optional<BeverageDTO> getBeverageById(UUID id);
+    BeverageDTO saveNewBeverage(BeverageDTO beverage);
 
-    void updateBeverage(UUID beverageId, Beverage beverage);
+    void updateBeverage(UUID beverageId, BeverageDTO beverage);
 
     void deleteBeverageById(UUID beverageId);
 
-    void patchBeverageById(UUID beverageId, Beverage beverage);
+    void patchBeverageById(UUID beverageId, BeverageDTO beverage);
 }

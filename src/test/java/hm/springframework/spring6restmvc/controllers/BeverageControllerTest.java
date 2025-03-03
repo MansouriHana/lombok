@@ -1,7 +1,7 @@
 package hm.springframework.spring6restmvc.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hm.springframework.spring6restmvc.model.Beverage;
+import hm.springframework.spring6restmvc.model.BeverageDTO;
 import hm.springframework.spring6restmvc.services.BeverageService;
 import hm.springframework.spring6restmvc.services.BeverageServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,14 +46,14 @@ class BeverageControllerTest {
     ArgumentCaptor<UUID> uuidArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<Beverage> beverageArgumentCaptor;
+    ArgumentCaptor<BeverageDTO> beverageArgumentCaptor;
     @BeforeEach
     void setUp() {
         beverageServiceImpl = new BeverageServiceImpl();
     }
     @Test
     void testPatchBeer() throws Exception {
-        Beverage bev = beverageServiceImpl.listBeverages().get(0);
+        BeverageDTO bev = beverageServiceImpl.listBeverages().get(0);
 
         Map<String, Object> bevMap = new HashMap<>();
         bevMap.put("beverageName", "New Name");
@@ -70,7 +71,7 @@ class BeverageControllerTest {
     }
     @Test
     void testDeleteBeverage() throws Exception {
-        Beverage testBev = beverageServiceImpl.listBeverages().get(0);
+        BeverageDTO testBev = beverageServiceImpl.listBeverages().get(0);
 
         mockMvc.perform(delete(BeverageController.BEVERAGE_PATH_ID, testBev.getId())
                         .accept(MediaType.APPLICATION_JSON))
@@ -81,22 +82,22 @@ class BeverageControllerTest {
     }
     @Test
     void testPutBeverage() throws Exception {
-        Beverage testBev = beverageServiceImpl.listBeverages().get(0);
+        BeverageDTO testBev = beverageServiceImpl.listBeverages().get(0);
 
         mockMvc.perform(put(BeverageController.BEVERAGE_PATH_ID,  testBev.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testBev)))
                 .andExpect(status().isNoContent());
-        verify(beverageService).updateBeverage(any(UUID.class), any(Beverage.class));
+        verify(beverageService).updateBeverage(any(UUID.class), any(BeverageDTO.class));
     }
     @Test
     void createBeverage() throws Exception {
-        Beverage testBev = beverageServiceImpl.listBeverages().get(0);
+        BeverageDTO testBev = beverageServiceImpl.listBeverages().get(0);
         testBev.setVersion(null);
         testBev.setId(null);
 
-        given(beverageService.saveNewBeverage(any(Beverage.class))).willReturn(beverageServiceImpl.listBeverages().get(1));
+        given(beverageService.saveNewBeverage(any(BeverageDTO.class))).willReturn(beverageServiceImpl.listBeverages().get(1));
         mockMvc.perform(post(BeverageController.BEVERAGE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -117,8 +118,8 @@ class BeverageControllerTest {
     }
     @Test
     void getBeverageById() throws Exception {
-        Beverage testBeverage = beverageServiceImpl.listBeverages().get(0);
-        given(beverageService.getBeverageById(any(UUID.class))).willReturn(testBeverage);
+        BeverageDTO testBeverage = beverageServiceImpl.listBeverages().get(0);
+        given(beverageService.getBeverageById(any(UUID.class))).willReturn(Optional.of(testBeverage));
 
         mockMvc.perform(get(BeverageController.BEVERAGE_PATH_ID, testBeverage.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -131,7 +132,7 @@ class BeverageControllerTest {
     @Test
     void getBeerByIdNotFound() throws Exception {
 
-        given(beverageService.getBeverageById(any(UUID.class))).willThrow(NotFoundException.class);
+        given(beverageService.getBeverageById(any(UUID.class))).willReturn(Optional.empty());
 
         mockMvc.perform(get(BeverageController.BEVERAGE_PATH_ID, UUID.randomUUID()))
                 .andExpect(status().isNotFound());
